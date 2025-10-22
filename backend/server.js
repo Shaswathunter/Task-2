@@ -12,8 +12,7 @@ connectDB();
 const app = express();
 
 // Allow frontend on localhost:3000 to access backend
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(express.json());
+app.use(cors({ origin: "https://your-frontend-url.vercel.app", credentials: true }));app.use(express.json());
 
 // Routes with /api prefix
 app.use('/api/auth', authRoutes);

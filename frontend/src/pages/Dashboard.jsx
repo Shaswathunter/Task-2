@@ -11,16 +11,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/dashboard", {
-        headers: { "x-auth-token": localStorage.getItem("token") },
-      })
-      .then((res) => {
-        console.log("Dashboard data:", res.data);
-        setData(res.data);
-      })
-      .catch((err) => console.error("Dashboard error:", err));
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/dashboard`)
+      .then((res) => setData(res.data))
+      .catch((err) => console.error(err));
   }, []);
-
   if (role !== "Manager") return <Navigate to="/products" />;
 
   const cardBg = darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900";
@@ -28,7 +22,11 @@ const Dashboard = () => {
   const chartBg = darkMode ? "#1f2937" : "#ffffff"; // for chart background
 
   return (
-    <div className={`${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"} p-8 min-h-screen`}>
+    <div
+      className={`${
+        darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+      } p-8 min-h-screen`}
+    >
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
       {data ? (
@@ -58,7 +56,11 @@ const Dashboard = () => {
                     responsive: true,
                     plugins: {
                       legend: { labels: { color: darkMode ? "#fff" : "#000" } },
-                      title: { display: true, text: "Monthly Earnings", color: darkMode ? "#fff" : "#000" },
+                      title: {
+                        display: true,
+                        text: "Monthly Earnings",
+                        color: darkMode ? "#fff" : "#000",
+                      },
                     },
                     scales: {
                       x: { ticks: { color: darkMode ? "#fff" : "#000" } },
@@ -80,7 +82,11 @@ const Dashboard = () => {
                     responsive: true,
                     plugins: {
                       legend: { labels: { color: darkMode ? "#fff" : "#000" } },
-                      title: { display: true, text: "Sales Overview", color: darkMode ? "#fff" : "#000" },
+                      title: {
+                        display: true,
+                        text: "Sales Overview",
+                        color: darkMode ? "#fff" : "#000",
+                      },
                     },
                     scales: {
                       x: { ticks: { color: darkMode ? "#fff" : "#000" } },
