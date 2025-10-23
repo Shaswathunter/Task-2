@@ -3,7 +3,7 @@ import axios from "axios";
 import { DarkModeContext } from "../context/DarkModeContext";
 import { toast } from "react-toastify";  // ✅ Import react-toastify
 import 'react-toastify/dist/ReactToastify.css';
-
+import { BACKEND_URL } from "../utils";
 const Product = () => {
   const { darkMode } = useContext(DarkModeContext);
   const role = localStorage.getItem("role");
@@ -26,7 +26,7 @@ const Product = () => {
   // Fetch products
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products", {
+      const res = await axios.get(`${BACKEND_URL}/api/products`, {
         headers: { "x-auth-token": token },
       });
       setProducts(res.data);
@@ -48,7 +48,7 @@ const Product = () => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
+      await axios.delete(`${BACKEND_URL}/api/products/${id}`, {
         headers: { "x-auth-token": token },
       });
       setProducts(products.filter((p) => p._id !== id));
@@ -79,14 +79,14 @@ const Product = () => {
     try {
       if (editingProduct) {
         await axios.put(
-          `http://localhost:5000/api/products/${editingProduct._id}`,
+          `${BACKEND_URL}/api/products/${editingProduct._id}`,
           formData,
           { headers: { "x-auth-token": token } }
         );
         toast.success("Product updated successfully!");
       } else {
         await axios.post(
-          "http://localhost:5000/api/products",
+          `${BACKEND_URL}/api/products`,
           formData,
           { headers: { "x-auth-token": token } }
         );
