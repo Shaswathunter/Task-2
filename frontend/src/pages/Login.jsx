@@ -5,7 +5,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { DarkModeContext } from "../context/DarkModeContext";
 import { toast } from "react-toastify"; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css';
-
+import { BACKEND_URL } from "../utils";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +30,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post(`${BACKEND_URL}/api/auth/login`, {
         email,
         password,
       });
