@@ -1,0 +1,1 @@
+export const BACKEND_URL = `https://task-2-vgu2.onrender.com`;

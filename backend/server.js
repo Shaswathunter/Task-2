@@ -12,8 +12,21 @@ connectDB();
 const app = express();
 
 // Allow frontend on localhost:3000 to access backend
-app.use(cors({ origin: "https://task-2-omega-gray.vercel.app/", credentials: true }));app.use(express.json());
-
+app.use(
+  cors({
+    origin: [ 
+      `${process.env.FRONTEND_URL}`,
+     "https://task-2-omega-gray.vercel.app"
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://task-2-omega-gray.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 // Routes with /api prefix
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);

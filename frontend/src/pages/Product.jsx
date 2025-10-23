@@ -1,6 +1,6 @@
  import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { BACKEND_URL } from "../../utils";
 const Product = () => {
   const role = localStorage.getItem("role");
   const [products, setProducts] = useState([]);
@@ -10,7 +10,7 @@ const Product = () => {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("token"); // get token
-        const res = await axios.get("http://localhost:5000/api/products", {
+        const res = await axios.get(`${BACKEND_URL}/api/products`, {
           headers: {
             "x-auth-token": token, // send token in header
           },
