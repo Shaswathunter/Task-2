@@ -1,6 +1,6 @@
  import { useEffect, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../../utils";
+import { BACKEND_URL } from "../utils";
 const Product = () => {
   const role = localStorage.getItem("role");
   const [products, setProducts] = useState([]);
