@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { Bar, Line } from "react-chartjs-2";
 import { DarkModeContext } from "../context/DarkModeContext";
 import { BACKEND_URL } from "../utils";
+import axios from "axios";
 const Dashboard = () => {
   const role = localStorage.getItem("role");
   const { darkMode } = useContext(DarkModeContext);
@@ -15,23 +15,26 @@ const Dashboard = () => {
       .then((res) => setData(res.data))
       .catch((err) => console.error(err));
   }, []);
+
   if (role !== "Manager") return <Navigate to="/products" />;
 
   const cardBg = darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900";
   const cardTitle = darkMode ? "text-gray-300" : "text-gray-600";
-  const chartBg = darkMode ? "#1f2937" : "#ffffff"; // for chart background
 
   return (
     <div
       className={`${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
-      } p-8 min-h-screen`}
+      } p-4 md:p-8 min-h-screen`}
     >
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center md:text-left">
+        Dashboard
+      </h1>
 
       {data ? (
         <>
-          <div className="grid grid-cols-3 gap-6 mb-8">
+          {/* Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6">
             <div className={`${cardBg} p-4 shadow rounded`}>
               <h2 className={`${cardTitle}`}>Total Earning</h2>
               <p className="text-2xl font-semibold">${data.totalEarning}</p>
@@ -46,9 +49,12 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          {/* Charts */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className={`${cardBg} p-4 shadow rounded`}>
-              <h2 className={`${cardTitle} mb-3`}>Monthly Earnings</h2>
+              <h2 className={`${cardTitle} mb-3 text-center md:text-left`}>
+                Monthly Earnings
+              </h2>
               {data.chartData ? (
                 <Bar
                   data={data.chartData}
@@ -69,12 +75,14 @@ const Dashboard = () => {
                   }}
                 />
               ) : (
-                <p>Loading chart...</p>
+                <p className="text-center">Loading chart...</p>
               )}
             </div>
 
             <div className={`${cardBg} p-4 shadow rounded`}>
-              <h2 className={`${cardTitle} mb-3`}>Sales Overview</h2>
+              <h2 className={`${cardTitle} mb-3 text-center md:text-left`}>
+                Sales Overview
+              </h2>
               {data.chartData ? (
                 <Line
                   data={data.chartData}
@@ -95,13 +103,13 @@ const Dashboard = () => {
                   }}
                 />
               ) : (
-                <p>Loading chart...</p>
+                <p className="text-center">Loading chart...</p>
               )}
             </div>
           </div>
         </>
       ) : (
-        <p>Loading dashboard data...</p>
+        <p className="text-center">Loading dashboard data...</p>
       )}
     </div>
   );

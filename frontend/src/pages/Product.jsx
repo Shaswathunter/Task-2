@@ -1,6 +1,7 @@
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../utils";
+
 const Product = () => {
   const role = localStorage.getItem("role");
   const [products, setProducts] = useState([]);
@@ -9,11 +10,9 @@ const Product = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const token = localStorage.getItem("token"); // get token
+        const token = localStorage.getItem("token");
         const res = await axios.get(`${BACKEND_URL}/api/products`, {
-          headers: {
-            "x-auth-token": token, // send token in header
-          },
+          headers: { "x-auth-token": token },
         });
         setProducts(res.data);
       } catch (err) {
@@ -26,42 +25,46 @@ const Product = () => {
   }, []);
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Products</h1>
-      {error && <p className="text-red-600 mb-4">{error}</p>}
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">
+        Products
+      </h1>
 
-      <div className="bg-white shadow rounded p-4 overflow-x-auto">
-        <table className="min-w-full border">
-          <thead className="bg-gray-100 text-left">
-            <tr>
-              <th className="p-3 border">Name</th>
-              <th className="p-3 border">Views</th>
-              <th className="p-3 border">Pricing</th>
-              <th className="p-3 border">Revenue</th>
-              {role === "Manager" && <th className="p-3 border">Manage</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p._id} className="hover:bg-gray-50">
-                <td className="p-3 border">{p.name}</td>
-                <td className="p-3 border">{p.views}</td>
-                <td className="p-3 border">${p.price}</td>
-                <td className="p-3 border">${p.revenue}</td>
-                {role === "Manager" && (
-                  <td className="p-3 border space-x-2">
-                    <button className="px-3 py-1 bg-blue-500 text-white rounded">
-                      Edit
-                    </button>
-                    <button className="px-3 py-1 bg-red-500 text-white rounded">
-                      Delete
-                    </button>
-                  </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {error && (
+        <p className="text-red-600 mb-4 text-center md:text-left">{error}</p>
+      )}
+
+      {/* Products Grid - Works for all screen sizes */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map((p) => (
+          <div
+            key={p._id}
+            className="bg-white rounded-lg shadow p-4 border border-gray-100 flex flex-col justify-between"
+          >
+            <div>
+              <h2 className="text-lg font-semibold truncate">{p.name}</h2>
+              <p className="text-sm text-gray-500">{p.views} views</p>
+            </div>
+            <div className="flex justify-between mt-2 text-sm text-gray-700">
+              <p>
+                <span className="font-medium">Price:</span> ${p.price}
+              </p>
+              <p>
+                <span className="font-medium">Revenue:</span> ${p.revenue}
+              </p>
+            </div>
+            {role === "Manager" && (
+              <div className="flex justify-end space-x-2 mt-4">
+                <button className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 transition">
+                  Edit
+                </button>
+                <button className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition">
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
