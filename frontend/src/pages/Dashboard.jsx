@@ -3,7 +3,7 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { Bar, Line } from "react-chartjs-2";
 import { DarkModeContext } from "../context/DarkModeContext";
-
+import { BACKEND_URL } from "../utils";
 const Dashboard = () => {
   const role = localStorage.getItem("role");
   const { darkMode } = useContext(DarkModeContext);
@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/api/dashboard`)
+      .get(`${BACKEND_URL}/api/dashboard`)
       .then((res) => setData(res.data))
       .catch((err) => console.error(err));
   }, []);
